@@ -230,21 +230,33 @@ button, input, select, textarea {
   gap: 16px;
 }
 
+.announcement-inner span {
+  display: inline-block;
+  line-height: 1.4;
+}
+
 .announcement-wa-btn {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   background: #25D366;
   color: #FFFFFF;
-  padding: 4px 12px;
+  padding: 5px 14px;
   border-radius: 9999px;
   font-weight: 700;
   font-size: 0.75rem;
-  transition: opacity var(--transition-fast);
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all var(--transition-fast);
+}
+
+.announcement-wa-btn svg {
+  flex-shrink: 0;
 }
 
 .announcement-wa-btn:hover {
-  opacity: 0.9;
+  background: #20BA5A;
+  transform: translateY(-1px);
 }
 
 /* ==========================================================================
@@ -1541,6 +1553,22 @@ button, input, select, textarea {
 }
 
 @media (max-width: 768px) {
+  .top-announcement {
+    padding: 8px 0;
+  }
+
+  .announcement-inner {
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    gap: 8px;
+  }
+
+  .announcement-wa-btn {
+    padding: 4px 10px;
+    font-size: 0.6875rem;
+  }
+
   .main-nav {
     display: none;
   }
@@ -1605,5 +1633,18 @@ button, input, select, textarea {
     flex-direction: column;
     gap: 12px;
     text-align: center;
+  }
+}
+
+@media (max-width: 520px) {
+  .announcement-inner {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 6px;
+  }
+
+  .announcement-wa-btn {
+    display: none; /* Clean presentation: users have the floating pulse WhatsApp button right at their thumb */
   }
 }
