@@ -997,7 +997,9 @@ button, input, select, textarea {
 }
 
 .doctor-photo-wrap {
-  height: 250px;
+  width: 100%;
+  aspect-ratio: 1 / 1.15;
+  min-height: 260px;
   overflow: hidden;
   background-color: #F8FAFC;
 }
@@ -1006,7 +1008,7 @@ button, input, select, textarea {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: top center;
+  object-position: center 15%;
   transition: transform var(--transition-normal);
 }
 
