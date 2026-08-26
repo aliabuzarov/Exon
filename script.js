@@ -1,5 +1,5 @@
 /**
- * MASTER ESTETİK KLİNİKA - INTERACTIVE JAVASCRIPT
+ * HEALTHCARE DIGITAL PLATFORM - INTERACTIVE JAVASCRIPT
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -84,13 +84,15 @@ function initTestimonialSlider() {
 function handleDoctorSearch() {
   const doctorType = document.getElementById('search-doctor-type').value;
   const specialist = document.getElementById('search-specialist').value;
+  const location = document.getElementById('search-location').value;
 
-  let queryText = 'Mütəxəssis və prosedur təyin edildi.';
-  if (doctorType || specialist) {
+  let queryText = 'Searching for all available medical specialists...';
+  if (doctorType || specialist || location) {
     const parts = [];
-    if (doctorType) parts.push(`Həkim: ${doctorType}`);
-    if (specialist) parts.push(`Xidmət: ${specialist}`);
-    queryText = `${parts.join(' | ')} üzrə qəbul üçün vaxt təyin edilir...`;
+    if (doctorType) parts.push(`Doctor: ${doctorType}`);
+    if (specialist) parts.push(`Specialty: ${specialist}`);
+    if (location) parts.push(`Location: ${location}`);
+    queryText = `Found matching specialists for: ${parts.join(' | ')}`;
   }
 
   showToast(queryText);
@@ -108,23 +110,21 @@ function quickFilter(tag) {
   const doctorSelect = document.getElementById('patient-doctor');
   const deptSelect = document.getElementById('patient-dept');
 
-  if (tag.includes('Eltəkin') && doctorSelect) {
-    doctorSelect.value = 'Dr. Eltəkin Səfərəliyev';
-  } else if (tag.includes('Gülnar') && doctorSelect) {
-    doctorSelect.value = 'Dr. Gülnar Səfərəliyeva';
-  } else if (tag.includes('Gülnur') && doctorSelect) {
-    doctorSelect.value = 'Dr. Gülnur Rüstəmova';
+  if (tag.includes('Dentist') || tag.includes('Dental')) {
+    if (deptSelect) deptSelect.value = 'Dental Wellness & Implants';
+    if (doctorSelect) doctorSelect.value = 'Dr. David Vance';
+  } else if (tag.includes('Aesthetic') || tag.includes('Surgery')) {
+    if (deptSelect) deptSelect.value = 'Aesthetic & Plastic Care';
+    if (doctorSelect) doctorSelect.value = 'Dr. Amanda Smith';
+  } else if (tag.includes('Dermatology')) {
+    if (deptSelect) deptSelect.value = 'Clinical Dermatology';
+    if (doctorSelect) doctorSelect.value = 'Dr. Sarah Johnson';
+  } else if (tag.includes('Checkup') || tag.includes('Cardiology')) {
+    if (deptSelect) deptSelect.value = 'General Health Checkup';
+    if (doctorSelect) doctorSelect.value = 'General Consultation';
   }
 
-  if (tag.includes('Tipplastika') && deptSelect) {
-    deptSelect.value = 'Tipplastika & Estetik Burun';
-  } else if (tag.includes('Rentgen') && deptSelect) {
-    deptSelect.value = '3D Stomatoloji Rentgen';
-  } else if (tag.includes('Dermatologiya') && deptSelect) {
-    deptSelect.value = 'Dermatologiya & Dəri Qulluğu';
-  }
-
-  showToast(`Seçildi: ${tag}`);
+  showToast(`Filter applied: ${tag}`);
   openBookingModal();
 }
 
@@ -137,7 +137,7 @@ function bookWithDoctor(doctorName) {
 }
 
 /* ---------------------------------------------------------
- * Booking Modal Handling & Direct WhatsApp Integration
+ * Booking Modal Handling
  * --------------------------------------------------------- */
 function openBookingModal() {
   const modal = document.getElementById('booking-modal');
@@ -173,16 +173,7 @@ function submitAppointment() {
   const date = document.getElementById('patient-date').value;
 
   closeBookingModal();
-  showToast(`Təşəkkür edirik ${name}! WhatsApp vasitəsilə sorğunuz yönləndirilir...`);
-
-  // WhatsApp Message String
-  const waMessage = `Salam Master Estetik Klinika,%0A%0AQəbula yazılmaq istəyirəm:%0A👤 Pasient: ${encodeURIComponent(name)}%0A📞 Nömrə: ${encodeURIComponent(phone)}%0A👨‍⚕️ Həkim: ${encodeURIComponent(doctor)}%0A🩺 Xidmət: ${encodeURIComponent(dept)}%0A📅 Tarix: ${encodeURIComponent(date)}`;
-
-  // Redirect to official WhatsApp number
-  setTimeout(() => {
-    window.open(`https://wa.me/994505883338?text=${waMessage}`, '_blank');
-  }, 1000);
-
+  showToast(`✅ Appointment confirmed for ${name} with ${doctor} on ${date}.`);
   document.getElementById('appointment-form').reset();
 }
 
@@ -190,9 +181,9 @@ function submitAppointment() {
  * Service Modal Handling
  * --------------------------------------------------------- */
 const serviceDescriptions = {
-  'Tipplastika və Estetik Prosedurlar': 'Tipplastika burun ucunun estetik və zərif formaya salınması əməliyyatıdır. Həmçinin klinika daxilində dodaq dolğusu, biorevitalizasiya, botulinoterapiya və digər qabaqcıl estetik prosedurlar tətbiq olunur.',
-  'Stomatoloji Xidmətlər və Rentgen': 'Dişlərin bərpası, estetik zirkonium vinirlər, müasir implantasiya, ağardılma və klinika daxili yüksək dəqiqlikli stomatoloji rentgen diaqnostikası.',
-  'Dermatologiya və Tibbi Qulluq': 'Akne, piqmentasiya, yaşlanma əleyhinə tibbi pilinqlər, mezoterapiya, plazmaterapiya və fərdi dəri qulluq proqramları.'
+  'Ophthalmology & Aesthetics': 'Comprehensive vision care, corrective surgical consultations, aesthetic non-invasive treatments, and eye health diagnostics.',
+  'Pathology & Dental Care': 'Advanced diagnostic laboratory testing, cosmetic dentistry, ceramic veneers, implants, and digital 3D dental imaging.',
+  'Pulmonology & Dermatology': 'Clinical respiratory evaluations, allergy management, preventative dermatological therapies, and personalized skincare programs.'
 };
 
 function openServiceModal(serviceTitle) {
@@ -202,7 +193,7 @@ function openServiceModal(serviceTitle) {
 
   if (modal && titleEl && descEl) {
     titleEl.textContent = serviceTitle;
-    descEl.textContent = serviceDescriptions[serviceTitle] || 'Master Estetik Klinikada ən müasir texnologiyalar ilə xidmətinizdəyik.';
+    descEl.textContent = serviceDescriptions[serviceTitle] || 'Our medical center provides high-quality diagnostic and therapeutic care with certified specialists.';
     modal.classList.add('active');
     modal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
